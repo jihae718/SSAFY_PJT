@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <header>
+    <h1 class="fw-bold">UPDATE</h1>
+    <hr>
+  </header>
+
+  <form action="{% url 'movies:update' movie.pk %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="reset" value="Reset"  class="btn btn-outline-warning btn-sm">
+    <input type="submit" value="Submit" class="btn btn-outline-primary btn-sm">
+  </form>
+  <hr>
+
+  <a href="{% url 'movies:index' %}" class="btn btn-outline-dark btn-sm">BACK</a>
+
+
+{% endblock content %}

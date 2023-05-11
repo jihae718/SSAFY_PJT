@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <h1>Update Movie</h1>
+  <form action="{% url 'movies:update' movie.pk %}" method="POST" enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{ form.as_p}}
+    <span><input type="submit"> <input type="reset"></span>
+
+  </form>
+  <hr>
+  <a href="{% url 'movies:detail' movie.pk %}">BACK</a>
+{% endblock %}

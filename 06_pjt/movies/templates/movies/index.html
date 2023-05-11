@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <header>
+    <h1 class="fw-bold">INDEX</h1>
+    <a href="{% url 'movies:create' %}" class="btn btn-outline-success btn-sm">CREATE</a>
+    <hr>
+  </header>
+
+  <div>
+    {% for movie in movies %}
+      <div class="card">
+        <div class="card-body">
+          <a href="{% url 'movies:detail' movie.pk %}" class="card-title fs-4">{{ movie.title }}</a>
+          <h6 class="card-subtitle mb-2 text-muted my-1">좋아요 {{movie.like_users.count}}개</h6>
+          {% if request.user.is_authenticated %}
+          <form action="{% url 'movies:likes' movie.pk %}" method="POST">
+            {% csrf_token %}
+            {% if request.user in movie.like_users.all %}
+              <input type="submit" value="좋아요 취소" class='btn btn-outline-danger btn-sm my-1'>
+            {% else %}
+              <input type="submit" value="좋아요" class='btn btn-outline-primary btn-sm my-1'>
+            {% endif %}
+          </form>
+        {% endif %}
+        </div>
+      </div>
+
+
+    <hr />
+
+    {% endfor %}
+  </div>
+
+{% endblock content %}

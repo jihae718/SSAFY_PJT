@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>상세보기</h1>
+<hr>
+<p><b>{{movie.title}}</b></p>
+<p><b>관객수 : </b>{{movie.audience}}</p>
+<p><b>개봉일 : </b>{{movie.release_date}}</p>
+<p><b>장르 : </b>{{movie.genre}}</p>
+<p><b>평점 : </b>{{movie.score}}</p>
+<p><b>포스터_URL : </b>{{movie.poster_url}}</p>
+<p><b>배우 상판 : </b>{{movie.actor_image}}</p>
+<p><b>영화 설명 : </b>{{movie.description}}</p>
+
+<hr>
+<a href=" {% url 'movies:update' movie.pk %}">수정하기</a>
+<form action="{% url 'movies:delete' movie.pk %}" id = "delete-btn">
+  {% csrf_token %} 
+  <input type="submit" value = '삭제하기' id="delete-btn"> 
+</form>
+<br>
+<a href=" {% url 'movies:index' %}">홈으로 가기</a>
+
+{% endblock content %}

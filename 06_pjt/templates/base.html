@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <title>pjt06</title>
+  </head>
+  <body>
+    <div class="container">
+      {% if user.is_authenticated %}
+      <h2>Hello, <a href="{% url 'accounts:profile' user.username %}" class="link-dark">{{user}}</a></h2>
+  
+      <div class="d-flex">
+        <a href="{% url 'accounts:update' %}" class="btn btn-outline-secondary btn-sm">회원정보수정</a><br>
+        <form action="{% url 'accounts:logout' %}" method="POST">
+          {% csrf_token %}
+          <input type="submit" value="Logout" class="btn btn-outline-secondary btn-sm mx-2">
+        </form>
+      </div>
+      
+      <form action="{% url 'accounts:delete' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="회원탈퇴" class="btn btn-outline-danger btn-sm my-1">
+      </form>
+      <a href="{% url 'accounts:profile' user.username %}" class="btn btn-outline-primary btn-sm">내 프로필</a>
+      {% else %}
+      <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-sm my-1">Login</a>
+      <a href="{% url 'accounts:signup' %}" class="btn btn-outline-warning btn-sm my-1">Signup</a>
+      {% endif %}
+      <hr />
+      {% block content %}
+      {% endblock content %}
+
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

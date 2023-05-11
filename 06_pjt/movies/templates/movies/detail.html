@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <header>
+    <h1 class="fw-bold">DETAIL</h1>
+    <hr>
+  </header>
+
+  <div>
+    <p class="fw-bold"> {{ movie.title }}</p>
+    <p class="fs-5 fw-lighter">{{ movie.description }}</p>
+    <p>작성자: <a href="{% url 'accounts:profile' movie.user.username %}" class="link-dark">{{ movie.user }}</a></p>
+  </div>
+
+  {% if request.user == movie.user %}
+  <div class="d-flex">
+    <a href="{% url 'movies:update' movie.pk %}" class="btn btn-outline-warning btn-sm">UPDATE</a>
+    <form action="{% url 'movies:delete' movie.pk %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="DELETE" class="btn btn-outline-danger btn-sm mx-1">
+    </form>
+  </div>
+  {% endif %}
+  <hr>
+
+  <p class="fs-5 fw-bold">댓글 목록</p>
+
+    <ul>
+      {% for comment in comments %}
+        <li>
+          <div class="d-flex align-items-center">
+          {{ comment.content }} - {{ comment.user }}
+          {% if request.user == comment.user %}
+            <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST">
+              {% csrf_token %}
+              <input type="submit" value="Delete" class="btn btn-outline-danger btn-sm mx-2">
+            </form>
+          </div>
+          {% endif %}
+        </li>
+        <br>
+      {% empty %}
+        <p>댓글이 없습니다.</p>
+      {% endfor %}
+    </ul>
+    <hr>
+
+    {% if request.user.is_authenticated %}
+      <form action="{% url 'movies:comments_create' movie.pk %}" method="POST">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" class="btn btn-secondary btn-sm">
+      </form>
+    {% else %}
+      <a href="{% url 'accounts:login' %}">로그인하기</a>
+    {% endif %}
+    <hr>
+    <a href="{% url 'movies:index' %}" class="btn btn-outline-dark btn-sm">BACK</a>
+{% endblock content %}
